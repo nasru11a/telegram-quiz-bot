@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20221116-01
+      author: nasru11a
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: users_pk
+                    nullable: false
+              - column:
+                  name: username
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: full_name
+                  type: varchar(255)
+        -  addUniqueConstraint:
+             tableName:  users
+             columnNames:  username
+             constraintName:  users_uk1

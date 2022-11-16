@@ -1,5 +1,4 @@
 services:
-
   db:
     hostname: postgres
     image: postgres:15.1

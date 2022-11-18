@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20221117-01
+      author: nasru11a
+      changes:
+        - createTable:
+            tableName: questions
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: questions_pk
+                    nullable: false
+              - column:
+                  name: topic
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: question
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: options
+                  type: varchar[]
+                  constraints:
+                    nullable: false
+              - column:
+                  name: correct_options_ids
+                  type: bigint[]
+                  constraints:
+                    nullable: false
+              - column:
+                  name: explanation
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+        -  addUniqueConstraint:
+             tableName:  questions
+             columnNames:  question
+             constraintName:  questions_uk1

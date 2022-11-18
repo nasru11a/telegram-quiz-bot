@@ -48,7 +48,7 @@ public class BotServiceImpl extends TelegramLongPollingBot implements BotService
     }
 
     private UserDto generateUserDto(String username, String firstName, String lastName) {
-        String fullName = firstName + lastName;
+        String fullName = firstName + " " + lastName;
         return UserDto.builder()
                 .username(username)
                 .fullName(fullName)

@@ -15,7 +15,13 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     @Override
     public void register(UserDto userDto) {
-        User user = mapper.map(userDto, User.class);
-        userRepository.save(user);
+        if (!checkIfUserAlreadyRegistered(userDto.getUsername())) {
+            User user = mapper.map(userDto, User.class);
+            userRepository.save(user);
+        }
+    }
+
+    private Boolean checkIfUserAlreadyRegistered(String username) {
+        return userRepository.getUserByUsername(username).isPresent();
     }
 }

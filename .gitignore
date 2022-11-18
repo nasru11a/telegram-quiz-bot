@@ -37,6 +37,4 @@ out/
 .vscode/
 
 ### Properties files ###
-/src/main/resources/application.yaml
-/src/main/resources/application-common.yaml
-/src/main/resources/application-db.yaml
+/src/main/resources/application*

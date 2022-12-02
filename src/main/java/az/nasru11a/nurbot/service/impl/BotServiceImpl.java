@@ -1,57 +1,49 @@
 package az.nasru11a.nurbot.service.impl;
 
-import az.nasru11a.nurbot.config.BotConfig;
-import az.nasru11a.nurbot.dto.UserDto;
 import az.nasru11a.nurbot.service.BotService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class BotServiceImpl extends TelegramLongPollingBot implements BotService {
+public class BotServiceImpl implements BotService {
 
-    private final BotConfig botConfig;
-    private final UserServiceImpl userService;
-
-    @Override
-    public String getBotUsername() {
-        return botConfig.getBotName();
-    }
+    private final String START_MESSAGE = "Salam. Mən Nur. Sənə suallar verib imtahana hazırlaşmaqda kömək edəcəm";
+    private final String BUTTON_1 = "Mənə sual ver";
+    private final String BUTTON_2 = "Mövzular üzrə";
 
     @Override
-    public String getBotToken() {
-        return botConfig.getToken();
-    }
-
-    @Override
-    public void onUpdateReceived(Update update) {
-        log.info("Update received!");
-        if (update.hasMessage() && update.getMessage().hasText()) {
-            String username = update.getMessage().getChat().getUserName();
-            String firstName = update.getMessage().getChat().getFirstName();
-            String lastName = update.getMessage().getChat().getLastName();
-            String userMessage = update.getMessage().getText();
-            log.info("Message is " + userMessage);
-
-            UserDto userDto = generateUserDto(username, firstName, lastName);
-
-            switch (userMessage) {
-                case "/start":
-                    userService.register(userDto);
-                    break;
-            }
-        }
-    }
-
-    private UserDto generateUserDto(String username, String firstName, String lastName) {
-        String fullName = firstName + " " + lastName;
-        return UserDto.builder()
-                .username(username)
-                .fullName(fullName)
+    public SendMessage generateStartMessage(Update update) {
+        return SendMessage.builder()
+                .chatId(update.getMessage().getChatId())
+                .text(START_MESSAGE)
+                .replyMarkup(returnInitialKeyboardMarkup())
                 .build();
     }
+
+    private ReplyKeyboardMarkup returnInitialKeyboardMarkup() {
+        List<KeyboardRow> keyboardRowList = new ArrayList<>();
+
+        KeyboardRow row;
+
+        row = new KeyboardRow();
+        row.add(BUTTON_1);
+        row.add(BUTTON_2);
+        keyboardRowList.add(row);
+
+        return ReplyKeyboardMarkup.builder()
+                .keyboard(keyboardRowList)
+                .resizeKeyboard(true)
+                .build();
+    }
+
 }

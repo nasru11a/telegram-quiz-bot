@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20221127-01
+      author: nasru11a
+      changes:
+        - createTable:
+            tableName: topics
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: topics_pk
+                    nullable: false
+              - column:
+                  name: parent_topic_id
+                  type: bigint
+              - column:
+                  name: topic
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+        -  addUniqueConstraint:
+             tableName:  topics
+             columnNames:  topic
+             constraintName:  topics_uk1

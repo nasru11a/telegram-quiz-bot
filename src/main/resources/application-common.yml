@@ -1,2 +1,6 @@
 server:
   port: 8088
+
+bot:
+  name: nurQuizeMaker_Bot
+  token: 5429348506:AAH9Ceo1G6vKbj-iuc2dRzyqhe8tG9dkz60

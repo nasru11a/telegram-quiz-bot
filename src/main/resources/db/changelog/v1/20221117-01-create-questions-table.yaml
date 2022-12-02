@@ -15,18 +15,13 @@ databaseChangeLog:
                     primaryKeyName: questions_pk
                     nullable: false
               - column:
-                  name: topic
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: type
-                  type: varchar(255)
+                  name: topic_id
+                  type: bigint
                   constraints:
                     nullable: false
               - column:
                   name: question
-                  type: varchar(255)
+                  type: varchar(1255)
                   constraints:
                     nullable: false
               - column:
@@ -35,8 +30,8 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: correct_options_ids
-                  type: bigint[]
+                  name: correct_option_id
+                  type: int4
                   constraints:
                     nullable: false
               - column:

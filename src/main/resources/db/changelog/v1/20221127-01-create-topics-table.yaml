@@ -22,6 +22,11 @@ databaseChangeLog:
                   type: varchar(255)
                   constraints:
                     nullable: false
+              - column:
+                  name: topic_full_name
+                  type: varchar(511)
+                  constraints:
+                    nullable: false
         -  addUniqueConstraint:
              tableName:  topics
              columnNames:  topic

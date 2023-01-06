@@ -15,6 +15,8 @@ import java.util.List;
 @NoArgsConstructor
 public class QuestionDto {
 
+    Long id;
+
     @NotNull
     Topic topic;
 

@@ -21,9 +21,8 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "topic_id")
-    Topic topic;
+    @Column(name = "topic_id", nullable = false)
+    Long topicId;
 
     @Column(name = "question", nullable = false)
     String question;

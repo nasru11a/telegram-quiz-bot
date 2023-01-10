@@ -1,57 +1,46 @@
 package az.nasru11a.nurbot.service.impl;
 
-import az.nasru11a.nurbot.config.BotConfig;
-import az.nasru11a.nurbot.dto.UserDto;
 import az.nasru11a.nurbot.service.BotService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static az.nasru11a.nurbot.domain.enumaration.BotConstants.*;
+import static az.nasru11a.nurbot.domain.enumaration.QuestionConstants.NEXT_CDATA;
+import static az.nasru11a.nurbot.domain.enumaration.QuestionConstants.NEXT_QUESTION;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class BotServiceImpl extends TelegramLongPollingBot implements BotService {
+public class BotServiceImpl implements BotService {
 
-    private final BotConfig botConfig;
-    private final UserServiceImpl userService;
-
-    @Override
-    public String getBotUsername() {
-        return botConfig.getBotName();
-    }
+    private final BotUtilsImpl botUtils;
 
     @Override
-    public String getBotToken() {
-        return botConfig.getToken();
+    public SendMessage sendStartMessage(Update update) {
+        return SendMessage.builder()
+                .chatId(update.getMessage().getChatId())
+                .text(START_MESSAGE.getText())
+                .replyMarkup(prepareInitialKeyboard())
+                .build();
     }
 
-    @Override
-    public void onUpdateReceived(Update update) {
-        log.info("Update received!");
-        if (update.hasMessage() && update.getMessage().hasText()) {
-            String username = update.getMessage().getChat().getUserName();
-            String firstName = update.getMessage().getChat().getFirstName();
-            String lastName = update.getMessage().getChat().getLastName();
-            String userMessage = update.getMessage().getText();
-            log.info("Message is " + userMessage);
-
-            UserDto userDto = generateUserDto(username, firstName, lastName);
-
-            switch (userMessage) {
-                case "/start":
-                    userService.register(userDto);
-                    break;
-            }
-        }
-    }
-
-    private UserDto generateUserDto(String username, String firstName, String lastName) {
-        String fullName = firstName + " " + lastName;
-        return UserDto.builder()
-                .username(username)
-                .fullName(fullName)
+    private InlineKeyboardMarkup prepareInitialKeyboard() {
+        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+        List<InlineKeyboardButton> topicButtons = new ArrayList<>();
+        topicButtons.add(botUtils.createKeyboardButton(TESTS.getText(),  TESTS_CDATA.getText()));
+        keyboard.add(topicButtons);
+        return InlineKeyboardMarkup.builder()
+                .keyboard(keyboard)
                 .build();
     }
 }

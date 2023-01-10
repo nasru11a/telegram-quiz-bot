@@ -5,17 +5,21 @@ import az.nasru11a.nurbot.dto.UserDto;
 import az.nasru11a.nurbot.repository.UserRepository;
 import az.nasru11a.nurbot.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final ModelMapper mapper;
     private final UserRepository userRepository;
+
     @Override
     public void register(UserDto userDto) {
         if (!checkIfUserAlreadyRegistered(userDto.getUsername())) {
+            log.info("User " + userDto.getUsername() + " is registered");
             User user = mapper.map(userDto, User.class);
             userRepository.save(user);
         }

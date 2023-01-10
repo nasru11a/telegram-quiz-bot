@@ -1,6 +1,6 @@
 package az.nasru11a.nurbot.config;
 
-import az.nasru11a.nurbot.service.impl.BotServiceImpl;
+import az.nasru11a.nurbot.handler.BaseHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -13,11 +13,11 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 @RequiredArgsConstructor
 public class BotInitializer {
 
-    private final BotServiceImpl botService;
+    private final BaseHandler baseHandler;
 
     @EventListener({ContextRefreshedEvent.class})
     public void init() throws TelegramApiException {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
-        telegramBotsApi.registerBot(botService);
+        telegramBotsApi.registerBot(baseHandler);
     }
 }

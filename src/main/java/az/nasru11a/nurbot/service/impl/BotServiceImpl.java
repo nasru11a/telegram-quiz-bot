@@ -6,44 +6,41 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static az.nasru11a.nurbot.domain.enumaration.BotConstants.*;
+import static az.nasru11a.nurbot.domain.enumaration.QuestionConstants.NEXT_CDATA;
+import static az.nasru11a.nurbot.domain.enumaration.QuestionConstants.NEXT_QUESTION;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class BotServiceImpl implements BotService {
 
-    private final String START_MESSAGE = "Salam. Mən Nur. Sənə suallar verib imtahana hazırlaşmaqda kömək edəcəm";
-    private final String BUTTON_1 = "Mənə sual ver";
-    private final String BUTTON_2 = "Mövzular üzrə";
+    private final BotUtilsImpl botUtils;
 
     @Override
-    public SendMessage generateStartMessage(Update update) {
+    public SendMessage sendStartMessage(Update update) {
         return SendMessage.builder()
                 .chatId(update.getMessage().getChatId())
-                .text(START_MESSAGE)
-                .replyMarkup(returnInitialKeyboardMarkup())
+                .text(START_MESSAGE.getText())
+                .replyMarkup(prepareInitialKeyboard())
                 .build();
     }
 
-    private ReplyKeyboardMarkup returnInitialKeyboardMarkup() {
-        List<KeyboardRow> keyboardRowList = new ArrayList<>();
-
-        KeyboardRow row;
-
-        row = new KeyboardRow();
-        row.add(BUTTON_1);
-        row.add(BUTTON_2);
-        keyboardRowList.add(row);
-
-        return ReplyKeyboardMarkup.builder()
-                .keyboard(keyboardRowList)
-                .resizeKeyboard(true)
+    private InlineKeyboardMarkup prepareInitialKeyboard() {
+        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+        List<InlineKeyboardButton> topicButtons = new ArrayList<>();
+        topicButtons.add(botUtils.createKeyboardButton(TESTS.getText(),  TESTS_CDATA.getText()));
+        keyboard.add(topicButtons);
+        return InlineKeyboardMarkup.builder()
+                .keyboard(keyboard)
                 .build();
     }
-
 }

@@ -52,14 +52,7 @@ public class BaseHandler extends TelegramLongPollingBot {
 
         switch (userMessage) {
             case "/start":
-                execute(botService.generateStartMessage(update));
-                userService.register(userDto);
-                break;
-            case "Mənə sual ver":
-                execute(questionService.generatePoll(update));
-                break;
-            case "Mövzular üzrə":
-                execute(topicService.getParentTopics(update));
+                execute(botService.sendStartMessage(update));
                 break;
         }
     }
@@ -75,7 +68,6 @@ public class BaseHandler extends TelegramLongPollingBot {
         String startQuiz = START_CDATA.getText();
         String endQuiz = END_CDATA.getText();
         String nextQuestion = NEXT_CDATA.getText();
-        String previousQuestion = PREVIOUS_CDATA.getText();
 
         if (callbackData.contains(parentTopicMark)) {
             execute(topicService.getChildTopicsOfParentTopic(update));

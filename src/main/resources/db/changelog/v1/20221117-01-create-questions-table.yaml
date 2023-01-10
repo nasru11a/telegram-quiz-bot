@@ -21,7 +21,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: question
-                  type: varchar(1255)
+                  type: varchar(300)
                   constraints:
                     nullable: false
               - column:

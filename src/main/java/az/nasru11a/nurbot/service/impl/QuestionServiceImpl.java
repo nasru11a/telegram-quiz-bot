@@ -11,7 +11,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.polls.SendPoll;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
@@ -22,7 +21,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import java.util.ArrayList;
 import java.util.List;
 
-import static az.nasru11a.nurbot.domain.enumaration.NavigationConstants.*;
 import static az.nasru11a.nurbot.domain.enumaration.QuestionConstants.*;
 import static az.nasru11a.nurbot.domain.enumaration.TopicConstants.CHILD_TOPIC_MARK;
 import static az.nasru11a.nurbot.domain.enumaration.TopicConstants.EMPTY_REPLACEMENT_STRING;
@@ -35,6 +33,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     private final ModelMapper mapper;
     private final QuestionRepository questionRepository;
+    private final BotUtilsImpl botUtils;
 
     @Override
     public QuestionDto createQuestion(QuestionDto dto) {
@@ -183,7 +182,7 @@ public class QuestionServiceImpl implements QuestionService {
     private void prepareNavigationKeyboard(InlineKeyboardMarkup inlineKeyboardMarkup, Long topicId, Integer page) {
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         List<InlineKeyboardButton> topicButtons = new ArrayList<>();
-        topicButtons.add(createKeyboardButton(NEXT_QUESTION.getText(), page + NEXT_CDATA.getText() + topicId));
+        topicButtons.add(botUtils.createKeyboardButton(NEXT_QUESTION.getText(), page + NEXT_CDATA.getText() + topicId));
         keyboard.add(topicButtons);
         inlineKeyboardMarkup.setKeyboard(keyboard);
     }
@@ -191,16 +190,9 @@ public class QuestionServiceImpl implements QuestionService {
     private void prepareInlineKeyboard(InlineKeyboardMarkup inlineKeyboardMarkup, Long childTopicId) {
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         List<InlineKeyboardButton> topicButtons = new ArrayList<>();
-        topicButtons.add(createKeyboardButton(START_QUIZ.getText(), START_CDATA.getText() + childTopicId));
+        topicButtons.add(botUtils.createKeyboardButton(START_QUIZ.getText(), START_CDATA.getText() + childTopicId));
         keyboard.add(topicButtons);
         inlineKeyboardMarkup.setKeyboard(keyboard);
-    }
-
-    private InlineKeyboardButton createKeyboardButton(String text, String callbackData) {
-        return InlineKeyboardButton.builder()
-                .text(text)
-                .callbackData(callbackData)
-                .build();
     }
 
     private Boolean doesQuestionAlreadyExist(String question) {

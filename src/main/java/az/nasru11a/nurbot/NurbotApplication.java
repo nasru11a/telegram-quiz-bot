@@ -55,6 +55,16 @@ public class NurbotApplication implements CommandLineRunner {
 						 Integer correctOptionId,
 						 String explanation)
 	{
+		if(question.length() > 300) {
+			throw new RuntimeException("Sual mətni 300 simboldan çox ola bilməz.");
+		}
+
+		for(String option: options) {
+			if (option.length()>100) {
+				throw new RuntimeException("Variant mətni 100 simboldan çox ola bilməz.");
+			}
+		}
+
 		Topic topic = topicRepository.findTopicByTopic(topicName)
 				.orElseThrow();
 		QuestionDto dto = QuestionDto.builder()
@@ -148,6 +158,30 @@ public class NurbotApplication implements CommandLineRunner {
 //		uploadQuestions("Məktəbəqədər təhsilin məqsəd və vəzifələri","\"Azərbaycan dünyəvi ölkədir, birmənalı şəkildə din dövlətdən ayrıdır\" fikri hansı didaktik prinsipə aiddir?", List.of("A. İnkişafyönümlülük", "B. Dünyəvilik", "C. Uşaqyönümlülük", "D. İnteqrativlik"),1, "");
 //		uploadQuestions("Məktəbəqədər təhsilin məqsəd və vəzifələri","Uyğunsuzluğu müəyyən edin", List.of("A. Məzmun komponentlərinin əlaqələndirilməsi/integrativlik ", "B. Bilik, bacarıq və vərdişlərin inkişafı / İnkişafyönümlülük", "C. Məzmun komponentlərinin tamlığı / azərbaycançılıq", "D. Uşaqların potensial imkanları / Uşaqyönümlülük"),2, "");
 //		uploadQuestions("Məktəbəqədər təhsilin məqsəd və vəzifələri","Gülay şeiri əzbərləyə bilmir. Pozulan didaktik prinsip?", List.of("A. Şəxsiyyətyönümlülük", "B. İnkişafyönümlülük", "C. Nəticəyönümlülük", "D. Uşaqyönümlülük"),0, "");
+
+		uploadTopics("", "Hər gün 20 test");
+		uploadTopics("Hər gün 20 test", "Test 9");
+
+		uploadQuestions("Test 9", "Fəal təlimin əsas xüsusiyyətlərinə aid deyil:", List.of("Uşaqlar bütün məşğələ zamanı fəal olurlar.", "Tapşırıqlar təfəkkürün inkişafına yönəlir.", "Uşaqlar fəal tədqiqatçı kimi çıxış edir.", "Əldə etdikləri yeni bilikləri yaradıcı tətbiq edə bilmirlər."),0, "");
+		uploadQuestions("Test 9", "Dəyərləndirmənin bu növündə tərbiyəçi müəllim meyyar cədvəlindən istifadə edə bilər:", List.of("Diaqnostik(ilkin dəyərləndirmə).", "İnkişafın izlənməsi(formativ qiymətləndirmə).", "İnkişafa dair yekun hesabat.", "Məktəbəqədər təhsilin sonunda dəyərləndirmə."),1, "");
+		uploadQuestions("Test 9", "Tərbiyəçi müəllim uşaqlar arasında baş verən munaqişənin həlli zamanı hansı alqoritmdən istifadə etməlidir?\nSəhv verilən variantı seçin:", List.of("Onlar üçün problemi yenidən ifadə etməli.", "Münaqişə tərəflərinin nə hiss etdiklərini öyrənməli.", "Tərəfdaşların qarşılıqlı maraqlarını fikirlərini və ya münaqişəyə olan baxışlarını toqquşdurmalı.", "Uşaqlardan münaqişənin həlli ilə bağlı fikirlərini söyləməlirini xahiş etməli."),2, "");
+		uploadQuestions("Test 9", "Müəllim peşə nüfuzunu möhkəmləndirməyə, müəllim adını, şərəf və ləyaqətini uca tutmağa borcludur:\nHansı etik davranış qaydasına aiddir?", List.of("Qərəzsizlik", "Mədəni davranış", "İctimai etimad", "Loyallıq"),2, "");
+		uploadQuestions("Test 9", "Şəkildə gördüyünüz əyani vəsaitlərdən hansı məşğələ zamanı istifadə edə bilərik?", List.of("Savad təlimi məşğələsi.", "Məntiqi və riyazi təfəkkür məşğələsi.", "Bədii təfəkkürün inkişafı məşğələsi.", "Fiziki mədəniyyət məşğələsi."),1, "");
+		uploadQuestions("Test 9", "Uşaqların məktəbə hazırlığı zamanı idraki proseslərin inkişafına aid edilə bilməz:", List.of("Diqqətin inkişafı", "Hafizənin inkişafı", "Təxəyyülün inkişafı", "Emosiyaların inkişafı"),3, "");
+		uploadQuestions("Test 9", "Məktəbəqədər yaşlı uşaqlarla \"söz oyunu\" oynamaq uşaqların məktəbə hazırlığı zamanı diqqət yetirməli hansı məqama aid edilə bilər?", List.of("Fiziki hazırlıq", "Nitq hazırlığı", "Emosional-iradi hazırlıq", "İdrak proseslərinin inkişafı"),1, "");
+		uploadQuestions("Test 9", "Həm cari həm də perspektiv planlaşdırmaya aid olanı seçin:", List.of("Məqsəd", "Tarix", "İş forması", "Resurslar"),3, "");
+//		uploadQuestions("Test 9", "Səriştənin növlərinə əsasən uyğunluğu müəyyən edin:\n1. Təfəkkürlə bağlı səriştələr\n2. Fəaliyyətlə bağlı səriştələr\n3. Dəyərlərlə baglı səriştələr\n\na. Problem həll etmə\nb. Ünsiyyət\nc. Milli kimliyin dərki, milli iftixar hissi\nd. Qərar qəbul etmə\ne. İnformasiya savadlılığı\nə. Mədəni müxtəlifliyə hörmət\nf. Fəal vətəndaş mövqeyi", List.of("1-a,c, 2-b,d, 3-e,ə,f", "1-a,d 2-b,e 3-c,ə,f", "1-b,d 2-e,ə 3-c,d,f", "1-e,ə 2-b,c 3-a,b,d,ə"),1, "");
+		uploadQuestions("Test 9", "Təlimin təşkilinə verilən pedoqoji tələblərə hansılar aiddir?", List.of("Şəxsiyyətyönümlülük, tələbyünömlülük.", "Diferensiallaşma, dünyəvilik", "İdrak fəallığı, əməkdaşlıq", "Nəticəyönümlülük, inkişafyönümlülük"),2, "");
+		uploadQuestions("Test 9", "Samirə özü və ailəsi haqqında ətraflı məlumat verdi. Samirədə hansı inkişaf sahəsi daha yaxşı formalaşmışdır?", List.of("Fiziki inkişaf sahəsi", "İdraki inkişaf sahəsi", "Sosial emosional inkişaf sahəsi", "Esteti yaradıcı inkişaf sahəsi"),1, "");
+		uploadQuestions("Test 9", "SİM(saglamliq imkanlari mehdud)uwaqlara aiddir?", List.of("İnkluziv təhsil", "İnnovatik təhsil", "Məktəbəqədər təhsil", "Düzgün variant yoxdur"),0, "");
+		uploadQuestions("Test 9", "Gün rejiminin əsas komponentlərindən hansı erkən yaşlarda uşaqlar üçün oyun səciyyəsi daşıyır?", List.of("Açıq havada qalma (gəzinti)", "Oyun fəaliyyəti", "Yuxu", "Tədris məşğələləri"),3, "");
+		uploadQuestions("Test 9", "Erkən məktəbəqədər yaşlı uşaqların gün rejimlərinin əsas komponentləri:", List.of("Qidalanma - yuxu - ayıqlıq", "Oyun - yuxu - qidalanma", "Qidalanma - tədris məşğələləri - ayıqlıq", "Oyun - ayıqlıq - qidalanma"),0, "");
+//		uploadQuestions("Test 9", "Verilənlərdən biri valideynlərin vəzifələrinə aiddir:", List.of("Övladı üçün məktəbəqədər təhsil müəssisəsini seçmək.", "Təhsilalanların hüquq və maraqlarını müdafiə etmək, müəssisənin ictimai idarə olunmasında iştirak etmək.", "Məktəbəqədər təhsil müəssisəsində uşaqların təhsilə marağı, qidalanması, tibbi müayinəsi və xidmət şəraiti haqqında məlumat almaq.", "Övladının erkən yaşda fiziki, əxlaqi və intellektual inkişafına şərait yaratmaq."),3, "");
+		uploadQuestions("Test 9", "Müxtəlif təşəbbüs və tədqiqatlar əsasında formalaşan mütərəqqi xarakterli yeniliklər:", List.of("İnnovasiya", "Qısamüddətli təlim", "İcma əsaslı məktəbəqədər təlim", "Mektebeqeder tehsil sahesinde dovlet siyasetinin esas prinsipi"),0, "");
+		uploadQuestions("Test 9", "Məşğələnin mərəhələlərinə aid olan variantı seçin:", List.of("Öyrənmə", "Oxuma", "Məqsəd", "Tətbiq etmə"),3, "");
+		uploadQuestions("Test 9", "Hansı variant ümumi təlim nəticələrinə aid edilə bilər:", List.of("Günay ucadan çıxış edəcək.", "Aynurə sadə riyazi tapşırıqları yerinə yetirdi.", "Ayan anası ilə birlikdə gozəl rəsm çəkir.", "Əli bədii yaradıcılıq bacarıqlarını nümayiş etdirir."),3, "");
+		uploadQuestions("Test 9", "Tək başına oyun sayılır, yalnız özləri istəsə başqasına müraciət edir:", List.of("Tək oyunlar", "Əməkdaşlıq oyunları", "Paralel oyunlar", "Sərbəst oyunlar"),3, "");
+		uploadQuestions("Test 9", "Yusif balaca bacısını çox sevir, ona qarşı qayğıkeş və mehribandır və oyun zamanı onun istəklərini nəzərə alır. Yusif hansı inkişaf sahəsinə aiddir?", List.of("Sosial-emosional inkişaf", "Fiziki inkişaf, sağlamlıq və təhlükəsizlik", "Estetik və yaradıcı inkişaf", "İdraki inkişaf"),0, "");
 
 	}
 }

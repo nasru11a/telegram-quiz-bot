@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20230223-04
+      author: nziyadov
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  value: 'nasru11a'
+              - column:
+                  name: full_name
+                  value: 'Nasrulla Ziyadov'

@@ -6,7 +6,6 @@ import az.nasru11a.nurbot.service.TopicService;
 import az.nasru11a.nurbot.service.impl.BotServiceImpl;
 import az.nasru11a.nurbot.service.impl.QuestionServiceImpl;
 import az.nasru11a.nurbot.service.impl.TopicServiceImpl;
-import az.nasru11a.nurbot.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import static az.nasru11a.nurbot.domain.enumaration.BotConstants.TESTS_CDATA;
 import static az.nasru11a.nurbot.domain.enumaration.NavigationConstants.*;
 import static az.nasru11a.nurbot.domain.enumaration.QuestionConstants.*;
 import static az.nasru11a.nurbot.domain.enumaration.TopicConstants.CHILD_TOPIC_MARK;
@@ -28,7 +28,6 @@ public class BaseHandler extends TelegramLongPollingBot {
     private final BotServiceImpl botService;
     private final QuestionServiceImpl questionService;
     private final TopicService topicService;
-    private final UserServiceImpl userService;
 
     @SneakyThrows
     @Override
@@ -51,15 +50,15 @@ public class BaseHandler extends TelegramLongPollingBot {
         log.info("Message is " + userMessage);
 
         switch (userMessage) {
-            case "/start":
-                execute(botService.sendStartMessage(update));
-                break;
+            case "/start" -> execute(botService.sendStartMessage(update));
+            case "Testlər" -> execute(topicService.getParentTopics(update));
         }
     }
 
     @SneakyThrows
     private void handleCallbackQuery(Update update) {
         String callbackData = update.getCallbackQuery().getData();
+        String testRequest = TESTS_CDATA.getText();
         String parentTopicMark = PARENT_TOPIC_MARK.getText();
         String childTopicMark = CHILD_TOPIC_MARK.getText();
         String nextButtonText = NAVIGATION_BUTTON.getText().concat(TopicServiceImpl.getSEPARATOR()).concat(NAVIGATION_BUTTON_NEXT.getText());
@@ -69,7 +68,10 @@ public class BaseHandler extends TelegramLongPollingBot {
         String endQuiz = END_CDATA.getText();
         String nextQuestion = NEXT_CDATA.getText();
 
-        if (callbackData.contains(parentTopicMark)) {
+        if (callbackData.contains(testRequest)) {
+            execute(questionService.deleteMessage(update));
+            execute(topicService.getParentTopics(update));
+        } else if (callbackData.contains(parentTopicMark)) {
             execute(topicService.getChildTopicsOfParentTopic(update));
         } else if (callbackData.startsWith(nextButtonText)) {
             log.info("Next button is pressed: ");

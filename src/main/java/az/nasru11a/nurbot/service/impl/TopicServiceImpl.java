@@ -1,9 +1,7 @@
 package az.nasru11a.nurbot.service.impl;
 
-import az.nasru11a.nurbot.domain.Question;
 import az.nasru11a.nurbot.domain.Topic;
 import az.nasru11a.nurbot.dto.TopicDto;
-import az.nasru11a.nurbot.repository.QuestionRepository;
 import az.nasru11a.nurbot.repository.TopicRepository;
 import az.nasru11a.nurbot.service.TopicService;
 import lombok.Getter;
@@ -36,7 +34,6 @@ public class TopicServiceImpl implements TopicService {
 
     private final ModelMapper mapper;
     private final TopicRepository topicRepository;
-    private final QuestionRepository questionRepository;
 
     private final static int DEFAULT_PAGE_SIZE = 5;
     private final static int DEFAULT_PAGE_NUMBER = 0;
@@ -51,6 +48,7 @@ public class TopicServiceImpl implements TopicService {
     private static final String FIRST_PAGE_MESSAGE = "Birinci hissədəsiniz, mövzuların digər hissələrinə nəzər yetirmək istəyirsinizsə > (növbəti) düyməsini seçin.";
 
     public SendMessage getParentTopics(Update update) {
+        Long chatId = update.hasMessage() ? update.getMessage().getChatId() : update.getCallbackQuery().getMessage().getChatId();
         List<Topic> topicList = topicRepository.findAll().stream()
                 .filter(topic -> topic.getParentTopicId() == null)
                 .toList();
@@ -58,7 +56,7 @@ public class TopicServiceImpl implements TopicService {
         prepareInlineParentTopicsKeyboard(inlineKeyboardMarkup, topicList);
 
         return SendMessage.builder()
-                .chatId(update.getMessage().getChatId())
+                .chatId(chatId)
                 .text(TOPIC_MESSAGE)
                 .replyMarkup(inlineKeyboardMarkup)
                 .build();

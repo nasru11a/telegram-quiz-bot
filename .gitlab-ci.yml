@@ -4,7 +4,7 @@ before_script:
   - export DOCKER_HOST="tcp://0.0.0.0:2375"
 
 variables:
-  DOCKER_TLS_CERTDIR: ""
+  DOCKER_TLS_CERTDIR: "/cert"
 
 services:
   - docker:dind

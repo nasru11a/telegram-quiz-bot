@@ -1,5 +1,8 @@
 image: gradle:6.4.1-jdk11
 
+before_script:
+  - export DOCKER_HOST="tcp://63.250.53.90:2375"
+
 services:
   - docker:dind
 

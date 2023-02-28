@@ -1,12 +1,26 @@
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
+
 plugins {
 	id 'org.springframework.boot' version "${springBootVersion}"
 	id 'io.spring.dependency-management' version "${springDependencyManagerVersion}"
 	id 'java'
+	id 'com.bmuschko.docker-remote-api' version "$dockerVersion" apply true
 }
 
 group = 'az.nasru11a'
-version = "${projectVersion}"
+def hash = 'git rev-parse --short HEAD'.execute().text.trim()
+version = "$projectVersion.$hash"
 sourceCompatibility = "${javaVersion}"
+
+bootJar {
+	baseName "$rootProject.name"
+}
+
+jar {
+	enabled = false
+}
 
 repositories {
 	mavenCentral()
@@ -35,4 +49,43 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+
+task dockerFile(type: Dockerfile, dependsOn: build) {
+	doLast{
+		println ("Do Last =========================")
+	}
+
+	doFirst{
+		println ("Do First =========================")
+	}
+
+	println("Config phase===============")
+
+	destFile.set(project.file('Dockerfile')) //create docker file
+	from 'openjdk:17-jdk-slim-buster' //install java
+	copyFile "build/libs/${bootJar.archiveFileName.get()}", '/app/' //copy
+	workingDir '/app/' //working dir
+	entryPoint 'java' //entrypoint
+	defaultCommand '-jar', "/app/${bootJar.archiveFileName.get()}"  //command
+
+}
+
+
+task dockerBuild(type: DockerBuildImage, dependsOn: dockerFile) {
+	inputDir.set(file('.'))
+	images.add("$dockerRepoUrl/${project.name}:$version")
+}
+
+
+task dockerPush(type: DockerPushImage, dependsOn: dockerBuild) {
+	images.add("$dockerRepoUrl/${project.name}:$version")
+}
+
+
+task callBash(){
+	println 'ls -la'.execute().text.trim()
+	def hash1 = 'git rev-parse --short HEAD'.execute().text.trim()
+	println("---->>>"+hash1)
 }

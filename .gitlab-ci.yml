@@ -1,8 +1,8 @@
 image: gradle:jdk17
 
 services:
-  - docker:dind
-
+  - docker:18.09-dind 
+    
 stages:
   - build
   - docker-push

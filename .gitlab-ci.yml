@@ -1,4 +1,4 @@
-image: gradle:6.4.1-jdk11
+image: gradle:jdk17
 
 before_script:
   - export DOCKER_HOST="tcp://63.250.53.90:2375"

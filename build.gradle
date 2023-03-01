@@ -64,7 +64,7 @@ task dockerFile(type: Dockerfile, dependsOn: build) {
 	println("Config phase===============")
 
 	destFile.set(project.file('Dockerfile')) //create docker file
-	from 'openjdk:17-jdk-slim-buster' //install java
+	from "bellsoft/liberica-openjdk-alpine:17"
 	copyFile "build/libs/${bootJar.archiveFileName.get()}", '/app/' //copy
 	workingDir '/app/' //working dir
 	entryPoint 'java' //entrypoint

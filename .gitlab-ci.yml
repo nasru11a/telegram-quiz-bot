@@ -1,7 +1,10 @@
 image: gradle:jdk17
 
+before_script:
+  - export DOCKER_HOST="tcp://63.250.53.90:2375"
+
 services:
-  - docker:18.09-dind 
+  - docker:dind 
     
 stages:
   - build

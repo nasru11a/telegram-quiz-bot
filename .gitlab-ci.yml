@@ -20,7 +20,6 @@ gradle-build-stage:
 gradle-docker-push:
   stage: docker-push
   script:
-    - docker login -u nasru11a -p Aa123456D docker.io
     - ./gradlew dockerPush --no-daemon
   only:
     - merge_requests

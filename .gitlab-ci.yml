@@ -1,7 +1,7 @@
 image: gradle:7.3.0-jdk17-alpine
 
 before_script:
-  - export DOCKER_HOST="docker:2375"
+  - export DOCKER_HOST="localhost:2375"
 
 services:
   - docker:dind 

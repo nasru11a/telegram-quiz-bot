@@ -23,7 +23,6 @@ gradle-docker-push:
     - ./gradlew dockerPush --no-daemon
   only:
     - merge_requests
-
 #deploy-to-k8s:
 #  stage: deploy
 #  image: bitnami/kubectl

@@ -1,7 +1,7 @@
 image: gradle:6.9.1-jdk17
 
-before_script:
-  - export DOCKER_HOST="tcp://localhost:2375"
+# before_script:
+#   - export DOCKER_HOST="tcp://localhost:2375"
 
 services:
   - docker:dind

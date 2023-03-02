@@ -20,7 +20,6 @@ gradle-build-stage:
 gradle-docker-push:
   stage: docker-push
   script:
-    - docker login --username=nasru11a --password=Aa123456D
     - ./gradlew dockerPush --no-daemon
   only:
     - merge_requests

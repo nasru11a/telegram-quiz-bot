@@ -1,10 +1,13 @@
 image: gradle:6.9.1-jdk17
 
-# before_script:
-#   - export DOCKER_HOST="tcp://localhost:2375"
+variables:
+  DOCKER_DRIVER: overlay2
+
+before_script:
+  - export DOCKER_HOST="tcp://localhost:2375"
 
 services:
-  - docker:dind
+  - docker:18-dind
 
 stages:
   - build

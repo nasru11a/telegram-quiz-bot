@@ -1,18 +1,7 @@
 image: gradle:6.9.1-jdk17
 
-# variables:
-#   DOCKER_DRIVER: overlay2
-#   # Use TLS https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
-#   DOCKER_HOST: tcp://docker:2376
-#   DOCKER_TLS_CERTDIR: "/certs"
-  
-# before_script:
-#   # - export DOCKER_HOST="tcp://localhost:2375"
-#   - export GRADLE_USER_HOME=`pwd`/.gradle
-#   - export DOCKER_HOST="tcp://docker:2376"
-#   - export DOCKER_TLS_CERTDIR="/certs"
 before_script:
-  - export DOCKER_HOST="tcp://63.250.53.90:2375"
+  - export DOCKER_HOST="tcp://localhost:2375"
 
 services:
   - docker:dind

@@ -5,7 +5,6 @@ before_script:
 
 services:
   - docker:dind
-    alias:docker
 
 stages:
   - build

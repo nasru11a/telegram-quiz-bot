@@ -2,10 +2,10 @@ image: gradle:6.9.1-jdk17
 
 before_script:
   - export DOCKER_HOST="tcp://docker:2375"
-  - docker login registry.gitlab.com -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD}
 
 services:
   - docker:dind
+    alias:docker
 
 stages:
   - build

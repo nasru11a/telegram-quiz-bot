@@ -81,6 +81,11 @@ task dockerBuild(type: DockerBuildImage, dependsOn: dockerFile) {
 
 task dockerPush(type: DockerPushImage, dependsOn: dockerBuild) {
 	images.add("$dockerRepoUrl/${project.name}:$version")
+
+	registryCredentials.setUsername("$dockerHubUsername")
+	registryCredentials.setPassword("$dockerHubPassword")
+	registryCredentials.setEmail("$dockerHubEmail")
+
 }
 
 

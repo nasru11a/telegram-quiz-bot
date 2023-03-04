@@ -85,7 +85,6 @@ task dockerPush(type: DockerPushImage, dependsOn: dockerBuild) {
 	registryCredentials.setUsername("$dockerHubUsername")
 	registryCredentials.setPassword("$dockerHubPassword")
 	registryCredentials.setEmail("$dockerHubEmail")
-
 }
 
 

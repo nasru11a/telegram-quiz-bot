@@ -64,7 +64,7 @@ task dockerFile(type: Dockerfile, dependsOn: build) {
 	println("Config phase===============")
 
 	destFile.set(project.file('Dockerfile')) //create docker file
-	from "bellsoft/liberica-openjdk-alpine:17"
+	from 'openjdk:17-jdk-slim-buster' //install java
 	copyFile "build/libs/${bootJar.archiveFileName.get()}", '/app/' //copy
 	workingDir '/app/' //working dir
 	entryPoint 'java' //entrypoint
@@ -81,6 +81,11 @@ task dockerBuild(type: DockerBuildImage, dependsOn: dockerFile) {
 
 task dockerPush(type: DockerPushImage, dependsOn: dockerBuild) {
 	images.add("$dockerRepoUrl/${project.name}:$version")
+
+	registryCredentials.setUsername("$dockerHubUsername")
+	registryCredentials.setPassword("$dockerHubPassword")
+	registryCredentials.setEmail("$dockerHubEmail")
+
 }
 
 

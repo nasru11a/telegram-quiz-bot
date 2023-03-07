@@ -9,6 +9,7 @@ services:
 stages:
   - build
   - docker-push
+  - deploy
 
 gradle-build-stage:
   stage: build
@@ -24,11 +25,11 @@ gradle-docker-push:
     - ./gradlew dockerPush --no-daemon
   only:
     - merge_requests
-#deploy-to-k8s:
-#  stage: deploy
-#  image: bitnami/kubectl
-#  script:
-#    - kubectl apply -f k8s/ms5-demo/ -n ms5-demo-dev
-#  only:
-#    - merge_requests
+deploy-to-k8s:
+ stage: deploy
+ image: bitnami/kubectl
+ script:
+   - kubectl apply -f k8s/ms5-demo/ -n ms5-demo-dev
+ only:
+   - merge_requests
 
